@@ -41,7 +41,7 @@ class Thing(Base):
     return f'({self.tid}) [{self.description}] owned by {self.owner}'
 
 # Create engine for sqlite database
-engine = create_engine("sqlite:///mydb.db", echo=True)
+engine = create_engine("sqlite:///mydb2.db", echo=True)
 
 # Takes all the classes and creats them into database
 Base.metadata.create_all(bind=engine)
@@ -61,7 +61,8 @@ session.add(Thing(2, "Houese", p2.ssn))
 session.commit()
 # results = session.query(Person).filter(Person.age > 20)
 # results = session.query(Person).filter(Person.firstname.like("%na%"))
-results = session.query(Person).filter(Person.firstname.in_(["Mana", "Chala"]))
+# results = session.query(Person).filter(Person.firstname.in_(["Mana", "Chala"]))
+results = session.query(Thing, Person).filter(Thing.owner == Person.ssn).filter(Person.firstname.like("%na%")).all()
 
-# for r in results:
-#   print(r)
+for r in results:
+  print(r)
